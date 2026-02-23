@@ -1,264 +1,216 @@
 # MEAN Stack CRUD Application - DevOps Assignment
 
-## 📋 Project Overview
-A full-stack MEAN (MongoDB, Express, Angular 15, Node.js) application with complete CI/CD pipeline, containerization, and cloud deployment.
+## About this project
 
-**Repository:** [discover-dollar-mean-devops-assignment](https://github.com/tejasgsv/discover-dollar-mean-devops-assignment)
+This is a full-stack MEAN application (MongoDB, Express, Angular 15, Node.js) that I've containerized and deployed with CI/CD pipeline for the Discover Dollar internship assignment.
 
-**Live Application:** http://13.48.84.172 *(Replace with your AWS public IP)*
+**Live URL:** http://13.48.84.172
 
----
+**GitHub Repo:** https://github.com/tejasgsv/discover-dollar-mean-devops-assignment
 
-## 🏗️ Architecture
+## What it does
 
-```
-┌─────────────────────────────────────────────────┐
-│              GitHub Repository                   │
-│    (Code Push triggers CI/CD Pipeline)          │
-└─────────────┬───────────────────────────────────┘
-              │
-              ▼
-┌─────────────────────────────────────────────────┐
-│           GitHub Actions CI/CD                   │
-│  • Build Docker images (SHA-tagged)             │
-│  • Push to Docker Hub                           │
-│  • Deploy to EC2                                │
-└─────────────┬───────────────────────────────────┘
-              │
-              ▼
-┌─────────────────────────────────────────────────┐
-│         AWS EC2 Ubuntu Server                    │
-│                                                  │
-│  ┌──────────────────────────────────────┐      │
-│  │  Nginx (Port 80) - Reverse Proxy     │      │
-│  │  • Serves Angular frontend           │      │
-│  │  • Proxies /api to backend:8080      │      │
-│  └──────────────┬───────────────────────┘      │
-│                 │                                │
-│  ┌──────────────▼───────────────────────┐      │
-│  │  Node.js Backend (Port 8080)         │      │
-│  │  • Express REST API                  │      │
-│  │  • CRUD operations                   │      │
-│  └──────────────┬───────────────────────┘      │
-│                 │                                │
-│  ┌──────────────▼───────────────────────┐      │
-│  │  MongoDB (Port 27017)                │      │
-│  │  • Database container                │      │
-│  └──────────────────────────────────────┘      │
-└─────────────────────────────────────────────────┘
-```
+Simple tutorial management app where you can:
+- Create new tutorials
+- View all tutorials
+- Edit existing tutorials
+- Delete tutorials
+- Search tutorials by title
 
----
+## Tech Stack
 
-## 🛠️ Technology Stack
+- Frontend: Angular 15
+- Backend: Node.js with Express
+- Database: MongoDB
+- Deployment: Docker containers on AWS EC2
+- CI/CD: GitHub Actions
+- Web Server: Nginx as reverse proxy
 
-| Component | Technology |
-|-----------|-----------|
-| **Frontend** | Angular 15 |
-| **Backend** | Node.js + Express |
-| **Database** | MongoDB |
-| **Containerization** | Docker + Docker Compose |
-| **CI/CD** | GitHub Actions |
-| **Cloud Platform** | AWS EC2 (Ubuntu) |
-| **Web Server** | Nginx (Reverse Proxy) |
-| **Registry** | Docker Hub |
-
----
-
-## 📁 Project Structure
+## Project Structure
 
 ```
-crud-dd-task-mean-app/
-├── .github/workflows/deploy.yml    # CI/CD pipeline
+.
 ├── backend/
 │   ├── app/
-│   │   ├── config/db.config.js     # MongoDB connection
-│   │   ├── controllers/tutorial.controller.js
-│   │   ├── models/tutorial.model.js
-│   │   └── routes/turorial.routes.js
-│   ├── server.js                   # Express server
+│   │   ├── config/        - database config
+│   │   ├── controllers/   - business logic
+│   │   ├── models/        - mongoose models
+│   │   └── routes/        - API endpoints
+│   ├── server.js
 │   ├── package.json
 │   └── dockerfile
 ├── frontend/
 │   ├── src/app/
-│   │   ├── components/             # Angular components
-│   │   ├── services/tutorial.service.ts
-│   │   └── models/tutorial.model.ts
-│   ├── nginx.conf                  # Nginx reverse proxy
+│   │   ├── components/    - Angular components
+│   │   ├── services/      - HTTP services
+│   │   └── models/
+│   ├── nginx.conf
 │   ├── package.json
 │   └── dockerfile
+├── .github/workflows/
+│   └── deploy.yml         - CI/CD pipeline
 ├── docker-compose.yml
 └── README.md
 ```
 
----
+## How to run locally
 
-## 🚀 Quick Start
-
-### Local Development with Docker Compose
+### Option 1: Using Docker Compose (recommended)
 
 ```bash
-# Clone repository
 git clone https://github.com/tejasgsv/discover-dollar-mean-devops-assignment.git
 cd discover-dollar-mean-devops-assignment
-
-# Start all services
 docker-compose up -d
-
-# Access application
-# Frontend: http://localhost
-# Backend API: http://localhost:8080/api/tutorials
-
-# Stop services
-docker-compose down
 ```
 
-### Traditional Development (Without Docker)
+Then open http://localhost in your browser.
 
-**Backend:**
+### Option 2: Running manually
+
+Backend:
 ```bash
 cd backend
 npm install
 node server.js
 ```
 
-**Frontend:**
+Frontend:
 ```bash
 cd frontend
 npm install
 ng serve --port 8081
 ```
 
-Navigate to `http://localhost:8081/`
+Open http://localhost:8081
 
----
+## AWS Deployment
 
-## ☁️ Cloud Deployment (AWS EC2)
+I deployed this on AWS EC2 Ubuntu instance. Here's how I did it:
 
-### Step 1: EC2 Instance Setup
+### Setting up EC2
 
-1. **Launch Ubuntu 22.04 LTS instance**
-2. **Security Group Rules:**
-   - Port 22 (SSH)
-   - Port 80 (HTTP)
-   - Port 8080 (Backend API)
+1. Created Ubuntu 22.04 LTS instance on AWS
+2. Configured security group to allow:
+   - Port 22 for SSH
+   - Port 80 for web access
+   - Port 8080 for backend API
 
-3. **Install Docker & Docker Compose:**
-   ```bash
-   ssh -i your-key.pem ubuntu@YOUR_EC2_IP
-   
-   # Install Docker
-   sudo apt update && sudo apt install docker.io docker-compose -y
-   sudo systemctl start docker
-   sudo usermod -aG docker ubuntu
-   newgrp docker
-   ```
+3. SSH into the server and install Docker:
+```bash
+ssh -i your-key.pem ubuntu@YOUR_EC2_IP
 
-### Step 2: Deploy Application
+sudo apt update
+sudo apt install docker.io docker-compose -y
+sudo systemctl start docker
+sudo usermod -aG docker ubuntu
+```
+
+### Deploying the app
 
 ```bash
-# Create deployment directory
-mkdir ~/dd-app && cd ~/dd-app
+# Create a directory for the app
+mkdir ~/dd-app
+cd ~/dd-app
 
-# Create docker-compose.yml (copy from repository)
-nano docker-compose.yml
+# Copy docker-compose.yml to the server
+# You can use scp or just create it with nano
 
-# Login to Docker Hub
+# Pull images from Docker Hub
 docker login
-
-# Deploy application
 docker compose pull
+
+# Start everything
 docker compose up -d
 
-# Verify containers
+# Check if containers are running
 docker ps
 ```
 
----
+You should see 3 containers running: mongo, backend, and frontend.
 
-## 🔄 CI/CD Pipeline
+## CI/CD with GitHub Actions
 
-### GitHub Actions Workflow Features
+I set up automatic deployment using GitHub Actions. Whenever I push code to the main branch, it automatically:
+1. Builds new Docker images
+2. Pushes them to Docker Hub
+3. Deploys to EC2
 
-✅ **Automatic on every push to `main`**
-✅ **Commit SHA-based image tagging** (production-grade)
-✅ **Zero-downtime deployment**
-✅ **Rollback capability**
+### GitHub Secrets needed
 
-### Required GitHub Secrets
+You need to add these secrets in your GitHub repo settings (Settings > Secrets and variables > Actions):
 
-Go to: `Settings → Secrets and variables → Actions`
+- DOCKER_USERNAME - your Docker Hub username
+- DOCKER_PASSWORD - your Docker Hub password or access token
+- EC2_HOST - your EC2 instance public IP
+- EC2_SSH_KEY - the private SSH key to access EC2
 
-| Secret Name | Value | Description |
-|-------------|-------|-------------|
-| `DOCKER_USERNAME` | `tejas018` | Docker Hub username |
-| `DOCKER_PASSWORD` | `your-token` | Docker Hub access token |
-| `EC2_HOST` | `13.48.84.172` | AWS EC2 public IP |
-| `EC2_SSH_KEY` | `-----BEGIN...` | Private SSH key content |
+### How it works
 
-### Deployment Process
+The workflow file is in `.github/workflows/deploy.yml`. 
 
-```yaml
-1. Code pushed to GitHub main branch
-   ↓
-2. GitHub Actions triggers
-   ↓
-3. Build Docker images (tagged with commit SHA)
-   ↓
-4. Push images to Docker Hub
-   ↓
-5. SSH into EC2
-   ↓
-6. Pull new images and restart containers
-   ↓
-7. Application updated with zero downtime
+Key thing I did here: instead of using "latest" tag for Docker images, I'm using the commit SHA. This means every commit gets its own image tag, making it easy to rollback if needed.
+
+## Docker Setup
+
+### Dockerfiles
+
+**Backend Dockerfile:**
+```dockerfile
+FROM node:18
+WORKDIR /app
+COPY package*.json ./
+RUN npm install 
+COPY . .
+EXPOSE 8080
+CMD ["npm", "start"]
 ```
 
----
+**Frontend Dockerfile:**
+```dockerfile
+FROM node:18 as build
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
 
-## 🐳 Docker Configuration
+FROM nginx:alpine
+COPY --from=build /app/dist/angular-15-crud /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+```
 
-### Images on Docker Hub
+### docker-compose.yml
 
-- **Backend:** `tejas018/dd-backend:<commit-sha>`
-- **Frontend:** `tejas018/dd-frontend:<commit-sha>`
-
-### Container Architecture
-
+The docker-compose file uses environment variable for image tags:
 ```yaml
 services:
-  mongo:
-    image: mongo:latest
-    ports: ["27017:27017"]
-    
   backend:
     image: tejas018/dd-backend:${IMAGE_TAG:-latest}
-    ports: ["8080:8080"]
-    depends_on: [mongo]
-    
   frontend:
     image: tejas018/dd-frontend:${IMAGE_TAG:-latest}
-    ports: ["80:80"]
-    depends_on: [backend]
 ```
 
----
+This way, in production the IMAGE_TAG is set to commit SHA, but locally it defaults to "latest".
 
-## 🌐 Nginx Reverse Proxy Setup
+## Nginx Configuration
 
-**Configuration:** `frontend/nginx.conf`
+I set up Nginx as a reverse proxy in the frontend container. It does two things:
+1. Serves the Angular app
+2. Forwards /api requests to the backend container
 
+This way everything is accessible on port 80 and there are no CORS issues.
+
+The nginx.conf file:
 ```nginx
 server {
     listen 80;
-    
-    # Serve Angular static files
     location / {
         root /usr/share/nginx/html;
         try_files $uri $uri/ /index.html;
     }
     
-    # Proxy API requests to backend
     location /api/ {
         proxy_pass http://backend:8080;
         proxy_set_header Host $host;
@@ -267,139 +219,78 @@ server {
 }
 ```
 
-**Benefits:**
-- Single entry point (port 80)
-- No CORS issues
-- Clean URLs for API
+## API Endpoints
 
----
+The backend exposes these REST APIs:
 
-## 📊 API Endpoints
+- GET /api/tutorials - get all tutorials
+- GET /api/tutorials/:id - get one tutorial
+- POST /api/tutorials - create tutorial
+- PUT /api/tutorials/:id - update tutorial  
+- DELETE /api/tutorials/:id - delete tutorial
+- DELETE /api/tutorials - delete all
+- GET /api/tutorials?title=keyword - search by title
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/tutorials` | Get all tutorials |
-| GET | `/api/tutorials/:id` | Get tutorial by ID |
-| POST | `/api/tutorials` | Create new tutorial |
-| PUT | `/api/tutorials/:id` | Update tutorial |
-| DELETE | `/api/tutorials/:id` | Delete tutorial |
-| DELETE | `/api/tutorials` | Delete all tutorials |
-| GET | `/api/tutorials?title=xyz` | Search by title |
+## Testing
 
----
-
-## 🧪 Testing
-
-### Manual API Testing
+You can test the API with curl:
 
 ```bash
-# Create tutorial
-curl -X POST http://YOUR_EC2_IP/api/tutorials \
+# Create a tutorial
+curl -X POST http://YOUR_IP/api/tutorials \
   -H "Content-Type: application/json" \
-  -d '{"title":"Docker","description":"Learn Docker","published":true}'
+  -d '{"title":"Test","description":"Testing","published":true}'
 
 # Get all tutorials
-curl http://YOUR_EC2_IP/api/tutorials
-
-# Update tutorial
-curl -X PUT http://YOUR_EC2_IP/api/tutorials/TUTORIAL_ID \
-  -H "Content-Type: application/json" \
-  -d '{"title":"Updated Title"}'
-
-# Delete tutorial
-curl -X DELETE http://YOUR_EC2_IP/api/tutorials/TUTORIAL_ID
+curl http://YOUR_IP/api/tutorials
 ```
 
----
+Or just use the web interface at http://YOUR_IP
 
-## 📸 Screenshots
+## Troubleshooting
 
-### 1. CI/CD Pipeline
-*GitHub Actions executing build and deployment*
-![GitHub Actions](screenshots/github-actions.png)
+If something's not working:
 
-### 2. Docker Hub Repository
-*Images tagged with commit SHA*
-![Docker Hub](screenshots/docker-hub.png)
-
-### 3. Application UI
-*Frontend displaying tutorials*
-![Application](screenshots/app-ui.png)
-
-### 4. AWS Infrastructure
-*EC2 instance and security groups*
-![AWS EC2](screenshots/aws-ec2.png)
-
-### 5. Running Containers
-*Docker containers on EC2*
-![Docker PS](screenshots/docker-ps.png)
-
----
-
-## 🔧 Troubleshooting
-
-### Check container logs
+Check container logs:
 ```bash
 docker logs frontend
 docker logs backend
 docker logs mongo
 ```
 
-### Verify MongoDB connection
+Check if all containers are running:
 ```bash
-docker exec -it mongo mongosh
-show dbs
-use dd_db
-db.tutorials.find()
+docker ps
 ```
 
-### Test Nginx configuration
-```bash
-docker exec frontend nginx -t
-```
-
-### Restart services
+Restart containers:
 ```bash
 docker compose restart
 ```
 
----
+## Screenshots
 
-## 📈 Production Improvements
+See the screenshots folder for images showing:
+- GitHub Actions CI/CD pipeline execution
+- Docker Hub with tagged images
+- Application running on AWS
+- EC2 instance configuration
+- Running Docker containers
 
-✅ **Commit SHA tagging** - No `latest` overwrites
-✅ **Environment-based configs** - Different settings for dev/prod
-✅ **Nginx reverse proxy** - Single entry point
-✅ **Auto-restart policies** - Containers restart on failure
-✅ **CORS configuration** - Proper cross-origin handling
+## Notes
 
----
+This was a good learning experience. Some challenges I faced:
+- Getting the nginx proxy to work correctly with the backend
+- Making sure the frontend could talk to the backend in containers
+- Setting up the CI/CD to use commit SHA instead of latest tags
 
-## 🎯 Future Enhancements
-
-- [ ] HTTPS with SSL certificates
-- [ ] Custom domain mapping
-- [ ] Kubernetes deployment
-- [ ] Monitoring (Prometheus + Grafana)
-- [ ] Auto-scaling
-- [ ] Database backups
+The commit SHA tagging was especially important - it means I can rollback to any previous version if something breaks.
 
 ---
 
-## 👤 Author
+**Project submitted for Discover Dollar DevOps Internship Assignment**
 
-**Tejas GSV**
-- GitHub: [@tejasgsv](https://github.com/tejasgsv)
-- Docker Hub: [tejas018](https://hub.docker.com/u/tejas018)
-
----
-
-## 📝 Assignment Details
-
-**Submitted for:** Discover Dollar DevOps Internship
-**Date:** February 24, 2026
-**Contact:** raghunath.k@discoverdollar.com
-
----
-
-**Last Updated:** February 24, 2026
+Author: Tejas  
+Date: February 24, 2026  
+GitHub: https://github.com/tejasgsv  
+Docker Hub: https://hub.docker.com/u/tejas018
