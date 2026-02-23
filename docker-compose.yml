@@ -1,0 +1,25 @@
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+
+  backend:
+    image: tejas018/dd-backend:latest
+    container_name: backend
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo
+
+  frontend:
+    image: tejas018/dd-frontend:latest
+    container_name: frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend

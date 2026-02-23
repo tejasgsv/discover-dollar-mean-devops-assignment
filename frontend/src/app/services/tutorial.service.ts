@@ -3,7 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Tutorial } from '../models/tutorial.model';
 
-const baseUrl = 'http://localhost:8080/api/tutorials';
+// Use relative URL to backend API
+// This works with nginx proxy or when backend is on same host
+const baseUrl = '/api/tutorials';
 
 @Injectable({
   providedIn: 'root'

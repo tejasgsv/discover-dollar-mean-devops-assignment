@@ -3,8 +3,12 @@ const cors = require("cors");
 
 const app = express();
 
-// Enable CORS for Angular (4200) → Node backend (8080)
-app.use(cors());
+// Enable CORS for all origins (important for AWS/Kubernetes deployments)
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  credentials: false
+}));
 
 // Parse JSON requests
 app.use(express.json());
