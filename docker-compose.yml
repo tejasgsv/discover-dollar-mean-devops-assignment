@@ -7,7 +7,7 @@ services:
       - "27017:27017"
 
   backend:
-    image: tejas018/dd-backend:${IMAGE_TAG:-latest}
+    image: tejas018/dd-backend:${IMAGE_TAG}
     container_name: backend
     restart: always
     ports:
@@ -16,7 +16,7 @@ services:
       - mongo
 
   frontend:
-    image: tejas018/dd-frontend:${IMAGE_TAG:-latest}
+    image: tejas018/dd-frontend:${IMAGE_TAG}
     container_name: frontend
     restart: always
     ports:
