@@ -281,68 +281,86 @@ For CI/CD to work, configure these secrets in repository settings:
 
 ---
 
-## 📸 Screenshots & Deployment Evidence
+## 📸 Deployment Evidence Checklist
 
 ### 1. GitHub Actions CI/CD Pipeline
-![GitHub Actions Workflow](screenshots/1-github-actions.png)  
-**Status:** ✅ Automated deployment on every push to main branch  
-**Commit SHA:** Latest images tagged with commit hash for version control
+**Evidence of:** Automated deployment workflow  
+**Details:** 
+- ✅ Automated deployment on every push to main branch  
+- ✅ Commit SHA tagging for version control
+- ✅ Images pushed to Docker Hub automatically
+- ✅ EC2 deployment triggered via GitHub Actions
+
+**To verify:** Visit [GitHub Actions](https://github.com/tejasgsv/discover-dollar-mean-devops-assignment/actions)
 
 ### 2. Docker Hub Repository
-![Docker Hub Images](screenshots/2-docker-hub.png)  
-**Backend Images:** `tejas018/dd-backend:<commit-sha>`  
-**Frontend Images:** `tejas018/dd-frontend:<commit-sha>`  
-**All images versioned with commit SHA for easy rollback**
+**Evidence of:** Container image versioning  
+**Details:**
+- ✅ Backend Images: `tejas018/dd-backend:<commit-sha>`  
+- ✅ Frontend Images: `tejas018/dd-frontend:<commit-sha>`  
+- ✅ All images versioned with commit SHA for easy rollback
+- ✅ Production-ready image management
+
+**To verify:** Visit [Docker Hub](https://hub.docker.com/u/tejas018)
 
 ### 3. Application Frontend - Tutorial List
-![Tutorial List](screenshots/3-app-tutorial-list.png)  
-**Shows:** Angular app running on Nginx  
-**URL:** http://13.48.84.172  
-**Features:** View all tutorials, search, create new
+**Evidence of:** Working Angular application  
+**Details:**
+- ✅ Angular app running on Nginx  
+- ✅ URL: http://13.48.84.172  
+- ✅ Features: View tutorials, search, create new
 
 ### 4. Application - Add Tutorial Form
-![Add Tutorial](screenshots/4-app-add-tutorial.png)  
-**Shows:** Create new tutorial form  
-**Fields:** Title, Description, Published status toggle
+**Evidence of:** Frontend functionality  
+**Details:**
+- ✅ Create new tutorial form working  
+- ✅ Fields: Title, Description, Published status toggle
+- ✅ Form validation and submission working
 
 ### 5. Application - Tutorial Details & Update
-![Tutorial Details](screenshots/5-app-tutorial-details.png)  
-**Shows:** Individual tutorial view  
-**Actions:** Edit, delete, mark as published/unpublished
+**Evidence of:** CRUD operations  
+**Details:**
+- ✅ Individual tutorial view working  
+- ✅ Actions: Edit, delete, mark as published/unpublished
+- ✅ Data persistence with MongoDB
 
 ### 6. AWS EC2 Instance Configuration
-![EC2 Instance](screenshots/6-aws-ec2-instance.png)  
-**Instance Type:** t2.micro or larger  
-**OS:** Ubuntu 22.04 LTS  
-**Status:** Running and accessible via public IP
+**Evidence of:** Cloud infrastructure  
+**Details:**
+- ✅ Instance Type: t2.micro or larger  
+- ✅ OS: Ubuntu 22.04 LTS  
+- ✅ Status: Running and accessible via public IP (13.48.84.172)
 
 ### 7. AWS Security Groups
-![Security Groups](screenshots/7-aws-security-groups.png)  
-**Inbound Rules:**
-- Port 22 (SSH) - for remote access
-- Port 80 (HTTP) - public web access  
-- Port 8080 (Backend API) - direct backend access (optional)
+**Evidence of:** Network security  
+**Details:**
+- ✅ Inbound Rules configured:
+  - Port 22 (SSH) - for remote access
+  - Port 80 (HTTP) - public web access  
+  - Port 8080 (Backend API) - direct backend access
 
 ### 8. Docker Containers Status
-![Docker PS](screenshots/8-docker-ps-status.png)  
-**Containers Running:**
-- mongo (MongoDB database)
-- backend (Node.js REST API)
-- frontend (Angular + Nginx)
-
-**All containers restart automatically on failure**
+**Evidence of:** Container orchestration  
+**Details:**
+- ✅ Containers Running:
+  - mongo (MongoDB database)
+  - backend (Node.js REST API)
+  - frontend (Angular + Nginx)
+- ✅ All containers restart automatically on failure
 
 ### 9. Docker Hub Images with SHA Tags
-![Docker Images](screenshots/9-docker-images-sha.png)  
-**Backend Image:** tejas018/dd-backend with multiple SHA tags  
-**Frontend Image:** tejas018/dd-frontend with multiple SHA tags  
-**Latest deployment:** Using commit SHA for traceability
+**Evidence of:** Version control  
+**Details:**
+- ✅ Backend Image: tejas018/dd-backend with multiple SHA tags  
+- ✅ Frontend Image: tejas018/dd-frontend with multiple SHA tags  
+- ✅ Latest deployment: Using commit SHA for traceability
 
 ### 10. Backend API Response
-![API Response](screenshots/10-api-response.png)  
-**Endpoint:** GET /api/tutorials  
-**Response:** List of all tutorials in JSON format  
-**Status:** ✅ Backend successfully processing requests
+**Evidence of:** API functionality  
+**Details:**
+- ✅ Endpoint: GET /api/tutorials  
+- ✅ Response: List of all tutorials in JSON format  
+- ✅ Backend successfully processing requests
 
 ---
 
