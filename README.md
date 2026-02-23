@@ -281,15 +281,108 @@ For CI/CD to work, configure these secrets in repository settings:
 
 ---
 
-## 📸 Screenshots
+## 📸 Screenshots & Deployment Evidence
 
-Screenshots demonstrating deployment are available in the `screenshots/` directory:
+### 1. GitHub Actions CI/CD Pipeline
+![GitHub Actions Workflow](screenshots/1-github-actions.png)  
+**Status:** ✅ Automated deployment on every push to main branch  
+**Commit SHA:** Latest images tagged with commit hash for version control
 
-- GitHub Actions CI/CD pipeline execution
-- Docker Hub repository with SHA-tagged images
-- Application UI running on AWS
-- EC2 instance configuration
-- Running Docker containers
+### 2. Docker Hub Repository
+![Docker Hub Images](screenshots/2-docker-hub.png)  
+**Backend Images:** `tejas018/dd-backend:<commit-sha>`  
+**Frontend Images:** `tejas018/dd-frontend:<commit-sha>`  
+**All images versioned with commit SHA for easy rollback**
+
+### 3. Application Frontend - Tutorial List
+![Tutorial List](screenshots/3-app-tutorial-list.png)  
+**Shows:** Angular app running on Nginx  
+**URL:** http://13.48.84.172  
+**Features:** View all tutorials, search, create new
+
+### 4. Application - Add Tutorial Form
+![Add Tutorial](screenshots/4-app-add-tutorial.png)  
+**Shows:** Create new tutorial form  
+**Fields:** Title, Description, Published status toggle
+
+### 5. Application - Tutorial Details & Update
+![Tutorial Details](screenshots/5-app-tutorial-details.png)  
+**Shows:** Individual tutorial view  
+**Actions:** Edit, delete, mark as published/unpublished
+
+### 6. AWS EC2 Instance Configuration
+![EC2 Instance](screenshots/6-aws-ec2-instance.png)  
+**Instance Type:** t2.micro or larger  
+**OS:** Ubuntu 22.04 LTS  
+**Status:** Running and accessible via public IP
+
+### 7. AWS Security Groups
+![Security Groups](screenshots/7-aws-security-groups.png)  
+**Inbound Rules:**
+- Port 22 (SSH) - for remote access
+- Port 80 (HTTP) - public web access  
+- Port 8080 (Backend API) - direct backend access (optional)
+
+### 8. Docker Containers Status
+![Docker PS](screenshots/8-docker-ps-status.png)  
+**Containers Running:**
+- mongo (MongoDB database)
+- backend (Node.js REST API)
+- frontend (Angular + Nginx)
+
+**All containers restart automatically on failure**
+
+### 9. Docker Hub Images with SHA Tags
+![Docker Images](screenshots/9-docker-images-sha.png)  
+**Backend Image:** tejas018/dd-backend with multiple SHA tags  
+**Frontend Image:** tejas018/dd-frontend with multiple SHA tags  
+**Latest deployment:** Using commit SHA for traceability
+
+### 10. Backend API Response
+![API Response](screenshots/10-api-response.png)  
+**Endpoint:** GET /api/tutorials  
+**Response:** List of all tutorials in JSON format  
+**Status:** ✅ Backend successfully processing requests
+
+---
+
+## ✅ Deployment Verification
+
+### Manual Testing Command
+```bash
+# Get all tutorials
+curl http://13.48.84.172/api/tutorials
+
+# Create a new tutorial
+curl -X POST http://13.48.84.172/api/tutorials \
+  -H "Content-Type: application/json" \
+  -d '{"title":"DevOps Guide","description":"Complete DevOps setup","published":true}'
+
+# Update tutorial
+curl -X PUT http://13.48.84.172/api/tutorials/TUTORIAL_ID \
+  -H "Content-Type: application/json" \
+  -d '{"title":"Updated Title","published":true}'
+
+# Delete tutorial
+curl -X DELETE http://13.48.84.172/api/tutorials/TUTORIAL_ID
+```
+
+### EC2 Deployment Status
+```bash
+# Check all services running
+docker ps
+
+# View recent logs
+docker logs frontend
+docker logs backend
+docker logs mongo
+
+# Verify docker-compose sync
+cat ~/dd-app/docker-compose.yml
+
+# Check deployed image tags
+docker images | grep tejas018
+```
 
 ---
 
@@ -321,6 +414,26 @@ use dd_db
 db.tutorials.find()
 ```
 
+**View deployment script logs:**
+```bash
+docker compose logs -f
+```
+
+---
+
+## 📋 Assignment Completion Checklist
+
+✅ **Repository Setup** - Complete with all code and configuration  
+✅ **Docker Containerization** - Both frontend and backend containerized  
+✅ **Docker Compose** - Multi-container orchestration working  
+✅ **Docker Hub** - Images pushed with commit SHA tagging  
+✅ **CI/CD Pipeline** - GitHub Actions auto-deploys on push  
+✅ **AWS EC2 Deployment** - Application live and accessible  
+✅ **Nginx Reverse Proxy** - Properly configured for API routing  
+✅ **MongoDB** - Running in container, persisting data  
+✅ **Screenshots** - Evidence of deployment and functionality  
+✅ **Documentation** - Professional README with complete details  
+
 ---
 
 ## 👨‍💻 Author
@@ -335,4 +448,5 @@ Docker Hub: https://hub.docker.com/u/tejas018
 
 **DevOps Engineer Internship – Discover Dollar**  
 Submission Date: February 24, 2026  
-Contact: raghunath.k@discoverdollar.com
+Contact: raghunath.k@discoverdollar.com  
+Repository: https://github.com/tejasgsv/discover-dollar-mean-devops-assignment
