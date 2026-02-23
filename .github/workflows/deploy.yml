@@ -22,13 +22,13 @@ jobs:
 
     - name: Build and Push Backend Image
       run: |
-        docker build -t tejas018/dd-backend:latest ./backend
-        docker push tejas018/dd-backend:latest
+        docker build -t tejas018/dd-backend:${{ github.sha }} ./backend
+        docker push tejas018/dd-backend:${{ github.sha }}
 
     - name: Build and Push Frontend Image
       run: |
-        docker build -t tejas018/dd-frontend:latest ./frontend
-        docker push tejas018/dd-frontend:latest
+        docker build -t tejas018/dd-frontend:${{ github.sha }} ./frontend
+        docker push tejas018/dd-frontend:${{ github.sha }}
 
     - name: Deploy to EC2
       uses: appleboy/ssh-action@v0.1.10
@@ -38,6 +38,8 @@ jobs:
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
           cd ~/dd-app
+          export IMAGE_TAG=${{ github.sha }}
+          docker pull tejas018/dd-backend:${IMAGE_TAG}
+          docker pull tejas018/dd-frontend:${IMAGE_TAG}
           docker compose down
-          docker compose pull
-          docker compose up -d
+          IMAGE_TAG=${IMAGE_TAG} docker compose up -d
