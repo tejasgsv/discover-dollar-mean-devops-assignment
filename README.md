@@ -462,9 +462,3 @@ Docker Hub: https://hub.docker.com/u/tejas018
 
 ---
 
-## 🎯 Assignment Submitted For
-
-**DevOps Engineer Internship – Discover Dollar**  
-Submission Date: February 24, 2026  
-Contact: raghunath.k@discoverdollar.com  
-Repository: https://github.com/tejasgsv/discover-dollar-mean-devops-assignment
